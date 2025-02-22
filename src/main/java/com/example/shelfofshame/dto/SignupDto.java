@@ -1,5 +1,8 @@
 package com.example.shelfofshame.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +13,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class SignupDto {
+    @Email(message="Enter a valid email") @NotBlank(message="Email is required")
     private String email;
+    @Size(min = 3, max = 20, message="Username must be between 3 and 20 characters")
     private String username;
+    @Size(min=8, max=128, message="Password must be between 8 and 128 characters")
     private String password;
 }
