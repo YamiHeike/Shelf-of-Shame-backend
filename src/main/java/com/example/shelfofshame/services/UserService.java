@@ -34,9 +34,6 @@ public class UserService {
         String password = credentialsDto.getPassword().trim();
         String encodedPassword = passwordEncoder.encode(password);
 
-        System.out.println("Raw Password: " + password);
-        System.out.println("Stored Encoded Password: " + user.getPassword());
-        System.out.println("Encoded Password: " + encodedPassword);
         if (passwordEncoder.matches(password, user.getPassword())) {
             return userMapper.toUserDto(user);
         }
