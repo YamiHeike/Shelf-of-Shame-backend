@@ -2,8 +2,11 @@ package com.example.shelfofshame.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +30,10 @@ public class User {
     @Column(nullable = false)
     @Size(min=8,max=128)
     private String password;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserShelfItem> shelfItems;
 
-    @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private UserRole role;
 }

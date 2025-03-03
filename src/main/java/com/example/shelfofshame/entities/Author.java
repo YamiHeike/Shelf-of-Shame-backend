@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data @Builder
@@ -15,7 +17,7 @@ import lombok.NoArgsConstructor;
         uniqueConstraints = {
                 @UniqueConstraint(
                         name="unique_author",
-                        columnNames = { "firstName, lastName" }
+                        columnNames = { "firstName", "lastName" }
                 )
         })
 public class Author {
@@ -26,4 +28,6 @@ public class Author {
     private String firstName;
     @Column
     private String lastName;
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books;
 }
