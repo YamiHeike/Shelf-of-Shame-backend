@@ -6,7 +6,8 @@ server:
 spring:
   datasource:
     password:
-    url: jdbc:postgresql://localhost:5433/users
+    url: jdbc:postgresql://localhost:5433/shelf
+
   jpa:
     hibernate:
       ddl-auto: update
