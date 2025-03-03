@@ -1,10 +1,9 @@
-package com.example.shelfofshame.controllers;
+package com.example.shelfofshame.user;
 
-import com.example.shelfofshame.config.UserAuthProvider;
-import com.example.shelfofshame.dto.CredentialsDto;
-import com.example.shelfofshame.dto.SignupDto;
-import com.example.shelfofshame.dto.UserDto;
-import com.example.shelfofshame.services.UserService;
+import com.example.shelfofshame.security.UserAuthProvider;
+import com.example.shelfofshame.user.dto.CredentialsDto;
+import com.example.shelfofshame.user.dto.SignupDto;
+import com.example.shelfofshame.user.dto.UserDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

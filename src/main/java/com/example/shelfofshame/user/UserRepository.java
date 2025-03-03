@@ -1,6 +1,5 @@
-package com.example.shelfofshame.repositories;
+package com.example.shelfofshame.user;
 
-import com.example.shelfofshame.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

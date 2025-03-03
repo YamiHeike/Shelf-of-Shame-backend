@@ -1,4 +1,4 @@
-package com.example.shelfofshame.exceptions;
+package com.example.shelfofshame.errors;
 
 import org.springframework.http.HttpStatus;
 

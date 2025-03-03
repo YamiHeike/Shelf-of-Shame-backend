@@ -1,6 +1,6 @@
-package com.example.shelfofshame.config;
+package com.example.shelfofshame.security;
 
-import com.example.shelfofshame.dto.ErrorDto;
+import com.example.shelfofshame.errors.ErrorDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

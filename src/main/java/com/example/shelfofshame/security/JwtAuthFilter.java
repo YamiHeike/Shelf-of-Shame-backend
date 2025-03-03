@@ -1,4 +1,4 @@
-package com.example.shelfofshame.config;
+package com.example.shelfofshame.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

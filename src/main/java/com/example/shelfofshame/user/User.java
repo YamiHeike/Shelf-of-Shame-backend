@@ -1,5 +1,6 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.user;
 
+import com.example.shelfofshame.user.shelf.UserShelfItem;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

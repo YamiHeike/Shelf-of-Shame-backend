@@ -1,4 +1,4 @@
-package com.example.shelfofshame.dto;
+package com.example.shelfofshame.errors;
 
 import lombok.Builder;
 import lombok.Data;
