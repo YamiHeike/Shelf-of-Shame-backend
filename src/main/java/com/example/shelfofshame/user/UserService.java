@@ -1,13 +1,9 @@
-package com.example.shelfofshame.services;
+package com.example.shelfofshame.user;
 
-import com.example.shelfofshame.dto.CredentialsDto;
-import com.example.shelfofshame.dto.SignupDto;
-import com.example.shelfofshame.dto.UserDto;
-import com.example.shelfofshame.entities.UserRole;
-import com.example.shelfofshame.exceptions.AppException;
-import com.example.shelfofshame.entities.User;
-import com.example.shelfofshame.mappers.UserMapper;
-import com.example.shelfofshame.repositories.UserRepository;
+import com.example.shelfofshame.errors.AppException;
+import com.example.shelfofshame.user.dto.CredentialsDto;
+import com.example.shelfofshame.user.dto.SignupDto;
+import com.example.shelfofshame.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +28,6 @@ public class UserService {
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
 
         String password = credentialsDto.getPassword().trim();
-        String encodedPassword = passwordEncoder.encode(password);
 
         if (passwordEncoder.matches(password, user.getPassword())) {
             return userMapper.toUserDto(user);

@@ -1,5 +1,6 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.author;
 
+import com.example.shelfofshame.book.Book;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

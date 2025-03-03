@@ -1,4 +1,4 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.user.shelf;
 
 public enum Status {
     SHAME,

@@ -1,4 +1,4 @@
-package com.example.shelfofshame.config;
+package com.example.shelfofshame.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

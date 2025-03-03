@@ -1,4 +1,4 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.book.genre;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

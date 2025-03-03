@@ -1,11 +1,11 @@
-package com.example.shelfofshame.config;
+package com.example.shelfofshame.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.example.shelfofshame.dto.UserDto;
-import com.example.shelfofshame.services.UserService;
+import com.example.shelfofshame.user.dto.UserDto;
+import com.example.shelfofshame.user.UserService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

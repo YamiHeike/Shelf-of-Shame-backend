@@ -1,9 +1,9 @@
 package com.example.shelfofshame.config;
 
-import com.example.shelfofshame.dto.ErrorDto;
-import com.example.shelfofshame.dto.FieldErrorDto;
-import com.example.shelfofshame.dto.ValidationErrorDto;
-import com.example.shelfofshame.exceptions.AppException;
+import com.example.shelfofshame.errors.ErrorDto;
+import com.example.shelfofshame.errors.FieldErrorDto;
+import com.example.shelfofshame.errors.ValidationErrorDto;
+import com.example.shelfofshame.errors.AppException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

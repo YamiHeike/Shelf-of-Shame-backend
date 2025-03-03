@@ -1,5 +1,7 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.user.shelf;
 
+import com.example.shelfofshame.book.Book;
+import com.example.shelfofshame.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

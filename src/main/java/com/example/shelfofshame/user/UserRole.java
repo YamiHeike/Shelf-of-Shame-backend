@@ -1,4 +1,4 @@
-package com.example.shelfofshame.entities;
+package com.example.shelfofshame.user;
 
 public enum UserRole {
     ADMIN,
