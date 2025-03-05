@@ -21,10 +21,10 @@ public class UserShelfItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne @JsonIgnore
-    @JoinColumn(name = "userId", nullable = false, updatable = false)
+    @JoinColumn(name = "user_id", nullable = false, updatable = false)
     private User user;
     @ManyToOne
-    @JoinColumn(name = "bookIsbn", nullable = false, updatable = false)
+    @JoinColumn(name = "book_isbn", nullable = false, updatable = false)
     private Book book;
     @Column
     private String notes;

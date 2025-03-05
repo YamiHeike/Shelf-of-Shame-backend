@@ -1,6 +1,7 @@
 package com.example.shelfofshame.book;
 
 import com.example.shelfofshame.author.Author;
+import com.example.shelfofshame.book.genre.Genre;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -33,4 +34,11 @@ public class Book {
     private String coverUrl;
     @Column
     private int numberOfPages;
+    @ManyToMany
+    @JoinTable(
+            name = "books_genres",
+            joinColumns = @JoinColumn(name = "book_isbn"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Genre> genres;
 }

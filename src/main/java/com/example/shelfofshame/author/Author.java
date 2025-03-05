@@ -1,6 +1,7 @@
 package com.example.shelfofshame.author;
 
 import com.example.shelfofshame.book.Book;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,6 +30,7 @@ public class Author {
     private String firstName;
     @Column
     private String lastName;
+    @JsonIgnore
     @ManyToMany(mappedBy = "authors")
     private Set<Book> books;
 }
