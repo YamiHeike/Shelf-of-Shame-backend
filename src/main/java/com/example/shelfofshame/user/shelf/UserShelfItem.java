@@ -2,6 +2,7 @@ package com.example.shelfofshame.user.shelf;
 
 import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,7 +20,7 @@ public class UserShelfItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne @JsonIgnore
     @JoinColumn(name = "userId", nullable = false, updatable = false)
     private User user;
     @ManyToOne

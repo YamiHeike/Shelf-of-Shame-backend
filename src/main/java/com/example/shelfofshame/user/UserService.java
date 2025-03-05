@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class UserService {
         return userMapper.toUserDto(user);
     }
 
+    @Transactional(readOnly = true)
     public UserDto login(CredentialsDto credentialsDto) {
         User user = userRepository.findByEmail(credentialsDto.getEmail())
                 .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
@@ -36,6 +38,7 @@ public class UserService {
         throw new AppException("Wrong password", HttpStatus.BAD_REQUEST);
     }
 
+    @Transactional
     public UserDto register(SignupDto signupDto) {
         Optional<User> userOptional = userRepository.findByEmail(signupDto.getEmail());
         if (userOptional.isPresent()) {
