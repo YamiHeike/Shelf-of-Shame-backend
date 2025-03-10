@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,9 +23,11 @@ public class UserShelfItem {
     private Long id;
     @ManyToOne @JsonIgnore
     @JoinColumn(name = "user_id", nullable = false, updatable = false)
+    @NotNull
     private User user;
     @ManyToOne
     @JoinColumn(name = "book_isbn", nullable = false, updatable = false)
+    @NotNull
     private Book book;
     @Column
     private String notes;

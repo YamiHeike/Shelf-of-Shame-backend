@@ -31,8 +31,6 @@ public class Book {
     @Column
     private String description;
     @Column
-    private String coverUrl;
-    @Column
     private int numberOfPages;
     @ManyToMany
     @JoinTable(
