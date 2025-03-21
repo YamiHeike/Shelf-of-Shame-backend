@@ -1,6 +1,5 @@
-package com.example.shelfofshame.book.genre;
+package com.example.shelfofshame.book;
 
-import com.example.shelfofshame.book.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

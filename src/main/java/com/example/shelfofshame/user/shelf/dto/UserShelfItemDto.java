@@ -1,4 +1,4 @@
-package com.example.shelfofshame.user.shelf;
+package com.example.shelfofshame.user.shelf.dto;
 
 import com.example.shelfofshame.book.Book;
 import jakarta.validation.constraints.Max;
@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Data
-@Builder
 public class UserShelfItemDto {
     private Long id;
     @NotNull(message = "A blank book can't be added to your shelf")
