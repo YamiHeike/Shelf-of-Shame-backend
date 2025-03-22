@@ -32,7 +32,7 @@ public class UserShelfItemService {
     public UserShelfItem addNewBook(AddNewBookToShelfDto addNewBookDto, User user) {
         Book book = addNewBookDto.getBook();
         if (bookRepository.findByIsbn(book.getIsbn()).isPresent())
-            throw new AppException("Book already exists", HttpStatus.CONFLICT);
+            throw new AppException("Book already exists", HttpStatus.BAD_REQUEST);
         Book newBook = bookRepository.save(book);
         UserShelfItem shelfItem = userShelfItemMapper.mapNewToUserShelfItem(addNewBookDto);
         shelfItem.setBook(newBook);
