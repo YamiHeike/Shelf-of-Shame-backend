@@ -5,10 +5,7 @@ import com.example.shelfofshame.book.genre.Genre;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
@@ -16,6 +13,8 @@ import java.util.Set;
 @AllArgsConstructor
 @Data @Builder
 @Entity
+@ToString(exclude = {"authors", "genres"})
+@EqualsAndHashCode(exclude = {"authors", "genres"})
 @Table(name = "books")
 public class Book {
     @Id @Pattern(regexp = "^[0-9]{10}$", message = "ISBN-10 must be exactly 10 digits.")
