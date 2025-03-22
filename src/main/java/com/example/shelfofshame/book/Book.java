@@ -3,6 +3,7 @@ package com.example.shelfofshame.book;
 import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.book.genre.Genre;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Entity
 @Table(name = "books")
 public class Book {
-    @Id @Size(min = 10, max = 10)
+    @Id @Pattern(regexp = "^[0-9]{10}$", message = "ISBN-10 must be exactly 10 digits.")
     private String isbn;
     @Column(nullable = false)
     private String title;
