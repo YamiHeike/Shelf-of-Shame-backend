@@ -1,13 +1,9 @@
 package com.example.shelfofshame;
 
 import com.example.shelfofshame.author.Author;
-import com.example.shelfofshame.author.AuthorRepository;
 import com.example.shelfofshame.book.Book;
-import com.example.shelfofshame.book.BookRepository;
 import com.example.shelfofshame.book.genre.Genre;
-import com.example.shelfofshame.book.genre.GenreRepository;
 import com.example.shelfofshame.user.User;
-import com.example.shelfofshame.user.UserRepository;
 import com.example.shelfofshame.user.UserRole;
 import com.example.shelfofshame.user.shelf.Status;
 import com.example.shelfofshame.user.shelf.UserShelfItem;
@@ -31,19 +27,11 @@ public class UserShelfItemRepositoryTest {
     @Autowired
     UserShelfItemRepository userShelfItemRepository;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     TestEntityManager entityManager;
-    @Autowired
-    BookRepository bookRepository;
-    @Autowired
-    AuthorRepository authorRepository;
-    @Autowired
-    GenreRepository genreRepository;
 
     @Test
     @Transactional
-    public void shouldSaveUserShelfItem() {
+    protected void shouldSaveUserShelfItem() {
         User user = User
                 .builder()
                 .username("test")
@@ -51,18 +39,18 @@ public class UserShelfItemRepositoryTest {
                 .password("password")
                 .role(UserRole.USER)
                 .build();
-        userRepository.save(user);
+        entityManager.persist(user);
         Author author = Author.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .books(new HashSet<>())
                 .build();
-        authorRepository.save(author);
+        entityManager.persist(author);
         Genre genre = Genre.builder()
                 .name("test")
                 .books(new HashSet<>())
                 .build();
-        genreRepository.save(genre);
+        entityManager.persist(genre);
         Book book = Book
                 .builder()
                 .title("test")
@@ -72,7 +60,7 @@ public class UserShelfItemRepositoryTest {
                 .numberOfPages(500)
                 .genres(Set.of(genre))
                 .build();
-        bookRepository.save(book);
+        entityManager.persist(book);
         author.getBooks().add(book);
         genre.getBooks().add(book);
 
