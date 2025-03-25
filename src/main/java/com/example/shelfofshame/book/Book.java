@@ -13,8 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Data @Builder
 @Entity
-@ToString(exclude = {"authors", "genres"})
-@EqualsAndHashCode(exclude = {"authors", "genres"})
 @Table(name = "books")
 public class Book {
     @Id @Pattern(regexp = "^[0-9]{10}$", message = "ISBN-10 must be exactly 10 digits.")

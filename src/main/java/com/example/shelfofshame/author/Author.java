@@ -3,16 +3,15 @@ package com.example.shelfofshame.author;
 import com.example.shelfofshame.book.Book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data @Builder
+@ToString(exclude = {"books"})
+@EqualsAndHashCode(exclude = {"books"})
 @Entity
 @Table(
         name = "authors",
