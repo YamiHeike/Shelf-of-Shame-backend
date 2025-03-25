@@ -44,7 +44,7 @@ public class AuthControllerTest {
                 .token("test")
                 .build();
        doReturn(mockUser).when(userService).login(credentialsDto);
-        mockMvc.perform(post("/login")  // Set contentType on request, not response
+        mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(credentialsDto))
                 )
