@@ -3,6 +3,8 @@ package com.example.shelfofshame;
 import com.example.shelfofshame.user.UserService;
 import com.example.shelfofshame.user.dto.CredentialsDto;
 import com.example.shelfofshame.user.dto.UserDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +46,21 @@ public class AuthControllerTest {
        doReturn(mockUser).when(userService).login(credentialsDto);
         mockMvc.perform(post("/login")  // Set contentType on request, not response
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\": \"test@example.com\", \"password\": \"password123\"}"))
+                        .content(asJsonString(credentialsDto))
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.email").value("test@example.com"))
                 .andExpect(jsonPath("$.username").value("test"))
                 .andExpect(jsonPath("$.token", matchesPattern("^[\\w-]*\\.[\\w-]*\\.[\\w-]*$")));
+    }
+
+    static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
