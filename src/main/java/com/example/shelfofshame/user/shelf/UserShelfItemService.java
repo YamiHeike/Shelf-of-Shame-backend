@@ -4,7 +4,6 @@ import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.book.BookRepository;
 import com.example.shelfofshame.errors.AppException;
 import com.example.shelfofshame.user.User;
-import com.example.shelfofshame.user.UserMapper;
 import com.example.shelfofshame.user.UserService;
 import com.example.shelfofshame.user.shelf.dto.AddExistingBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
