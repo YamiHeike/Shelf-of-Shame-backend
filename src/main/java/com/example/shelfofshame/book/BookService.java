@@ -22,4 +22,7 @@ public class BookService {
         return bookRepository.findByTitle(title).orElse(null);
     }
 
+    public Book addBook(Book book) {
+        return bookRepository.save(book);
+    }
 }

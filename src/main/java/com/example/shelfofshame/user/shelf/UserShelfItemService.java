@@ -2,6 +2,7 @@ package com.example.shelfofshame.user.shelf;
 
 import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.book.BookRepository;
+import com.example.shelfofshame.book.BookService;
 import com.example.shelfofshame.errors.AppException;
 import com.example.shelfofshame.user.User;
 import com.example.shelfofshame.user.UserService;
@@ -18,14 +19,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserShelfItemService {
     private final UserShelfItemRepository userShelfItemRepository;
-    private final BookRepository bookRepository;
+    private final BookService bookService;
     private final UserShelfItemMapper userShelfItemMapper;
     private final UserService userService;
 
     @Transactional
     public UserShelfItem addExistingBook(AddExistingBookToShelfDto existingBookDto, User user) {
-        Book book = bookRepository.findByIsbn(existingBookDto.getIsbn())
-                .orElseThrow(() -> new AppException("Book not found", HttpStatus.NOT_FOUND));
+        Book book = bookService.getByIsbn(existingBookDto.getIsbn());
+        if(book == null) {
+            throw new AppException("Book not found", HttpStatus.NOT_FOUND);
+        }
         UserShelfItem shelfItem = userShelfItemMapper.mapExistingToUserShelfItem(existingBookDto);
         shelfItem.setBook(book);
         shelfItem.setUser(user);
@@ -38,9 +41,9 @@ public class UserShelfItemService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
         User user = userService.findUserByEmail(email);
-        if (bookRepository.findByIsbn(book.getIsbn()).isPresent())
+        if (bookService.getByIsbn(book.getIsbn()) != null)
             throw new AppException("Book already exists", HttpStatus.BAD_REQUEST);
-        Book newBook = bookRepository.save(book);
+        Book newBook = bookService.addBook(book);
         UserShelfItem shelfItem = userShelfItemMapper.mapNewToUserShelfItem(addNewBookDto);
         shelfItem.setBook(newBook);
         shelfItem.setUser(user);
