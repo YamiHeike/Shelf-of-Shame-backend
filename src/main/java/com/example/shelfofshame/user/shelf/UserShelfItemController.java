@@ -1,5 +1,6 @@
 package com.example.shelfofshame.user.shelf;
 
+import com.example.shelfofshame.user.AuthenticatedUserResolver;
 import com.example.shelfofshame.user.User;
 import com.example.shelfofshame.user.UserService;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
@@ -20,10 +21,11 @@ public class UserShelfItemController {
     private final UserService userService;
     private final UserShelfItemService userShelfItemService;
     private final UserShelfItemMapper userShelfItemMapper;
+    private final AuthenticatedUserResolver authenticatedUserResolver;
 
     @PostMapping("/add")
     public ResponseEntity<UserShelfItemDto> addNewBookToShelf(@RequestBody AddNewBookToShelfDto addNewBookToShelfDto, Principal principal) {
-        User user = userService.findUserByEmail(principal.getName());
+        User user = authenticatedUserResolver.getUser(principal);
         UserShelfItem userShelfItem = userShelfItemService.addNewBook(addNewBookToShelfDto, user);
         UserShelfItemDto userShelfItemDto = userShelfItemMapper.toUserShelfItemDto(userShelfItem);
         return ResponseEntity.ok(userShelfItemDto);

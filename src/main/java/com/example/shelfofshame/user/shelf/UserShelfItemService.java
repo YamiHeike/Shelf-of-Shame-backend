@@ -37,9 +37,6 @@ public class UserShelfItemService {
     @Transactional
     public UserShelfItem addNewBook(AddNewBookToShelfDto addNewBookDto, User user) {
         Book book = addNewBookDto.getBook();
-        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        // String email = auth.getName();
-        // User user = userService.findUserByEmail(email);
         if (bookService.getByIsbn(book.getIsbn()) != null)
             throw new AppException("Book already exists", HttpStatus.BAD_REQUEST);
         Book newBook = bookService.addBook(book);
