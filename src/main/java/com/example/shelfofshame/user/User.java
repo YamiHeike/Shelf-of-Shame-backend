@@ -4,6 +4,7 @@ import com.example.shelfofshame.user.shelf.UserShelfItem;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -31,6 +32,7 @@ public class User {
 
     @Column(nullable = false)
     @Size(min=8,max=128)
+    @NotBlank
     @JsonIgnore
     private String password;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
