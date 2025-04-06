@@ -49,7 +49,7 @@ public class UserService {
             throw new AppException("Email already in use", HttpStatus.BAD_REQUEST);
         }
 
-        String password = signupDto.getPassword();
+        String password = signupDto.getPassword().trim();
         User user = userMapper.signUpToUser(signupDto);
         user.setPassword(passwordEncoder.encode(password));
         user.setRole(UserRole.USER);
