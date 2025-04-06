@@ -22,10 +22,7 @@ public class UserShelfItemController {
 
     @PostMapping("/add")
     public ResponseEntity<UserShelfItemDto> addNewBookToShelf(AddNewBookToShelfDto addNewBookToShelfDto) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        User user = userService.findByUsername(username);
-        UserShelfItem userShelfItem = userShelfItemService.addNewBook(addNewBookToShelfDto, user);
+        UserShelfItem userShelfItem = userShelfItemService.addNewBook(addNewBookToShelfDto);
         UserShelfItemDto userShelfItemDto = userShelfItemMapper.toUserShelfItemDto(userShelfItem);
         return ResponseEntity.ok(userShelfItemDto);
     }
