@@ -57,8 +57,4 @@ public class UserService {
 
         return userMapper.toUserDto(newUser);
     }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
-    }
 }
