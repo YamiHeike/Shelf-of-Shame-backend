@@ -8,4 +8,5 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     Author findByFirstNameAndLastName(String firstName, String lastName);
     Author findByFirstName(String firstName);
     Author findByLastName(String lastName);
+    boolean existsByFirstNameAndLastName(String firstName, String lastName);
 }

@@ -25,6 +25,7 @@ public class BookService {
     }
 
     public Book addBook(Book book) {
+        // TODO: check for non-existing authors and genres (add AuthorService and GenreService)
         return bookRepository.save(book);
     }
 }
