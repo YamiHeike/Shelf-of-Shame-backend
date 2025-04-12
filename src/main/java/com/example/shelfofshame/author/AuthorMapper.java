@@ -1,5 +1,6 @@
 package com.example.shelfofshame.author;
 
+import com.example.shelfofshame.author.dto.CreateAuthorDto;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

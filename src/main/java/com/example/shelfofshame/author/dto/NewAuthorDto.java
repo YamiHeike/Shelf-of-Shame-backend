@@ -1,4 +1,4 @@
-package com.example.shelfofshame.author;
+package com.example.shelfofshame.author.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data @Builder
-public class CreateAuthorDto {
+public class NewAuthorDto {
+    private Long id;
     private String firstName;
     private String lastName;
 }
