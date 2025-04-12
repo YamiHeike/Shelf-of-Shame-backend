@@ -17,17 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authors")
 @RequiredArgsConstructor
 public class AuthorController {
-    private final AuthorRepository authorRepository;
-    private final AuthorMapper authorMapper;
+    private final AuthorService authorService;
 
     @Transactional
     @PostMapping("/new")
     public NewAuthorDto addAuthor(@RequestBody CreateAuthorDto newAuthor) {
-        Author author = authorMapper.createAuthorDtoToAuthor(newAuthor);
-        if(authorRepository.existsByFirstNameAndLastName(author.getFirstName(), author.getLastName()))
-            throw new AppException("Author already exists", HttpStatus.BAD_REQUEST);
-        Author adddedAuthor = authorRepository.save(author);
-        log.info("Added author: {}", adddedAuthor);
-        return authorMapper.authorToNewAuthorDto(adddedAuthor);
+        return authorService.addAuthor(newAuthor);
     }
 }
