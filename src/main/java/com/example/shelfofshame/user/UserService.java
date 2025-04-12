@@ -20,8 +20,12 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+        User user = findUserByEmail(email);
         return userMapper.toUserDto(user);
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -52,9 +56,5 @@ public class UserService {
         User newUser = userRepository.save(user);
 
         return userMapper.toUserDto(newUser);
-    }
-
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
     }
 }
