@@ -1,14 +1,13 @@
 package com.example.shelfofshame.author;
 
+import com.example.shelfofshame.author.dto.AuthorDto;
 import com.example.shelfofshame.author.dto.CreateAuthorDto;
-import com.example.shelfofshame.author.dto.NewAuthorDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -17,9 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthorController {
     private final AuthorService authorService;
 
-    @Transactional
     @PostMapping("/new")
-    public NewAuthorDto addAuthor(@RequestBody CreateAuthorDto newAuthor) {
+    public AuthorDto addAuthor(@RequestBody CreateAuthorDto newAuthor) {
         return authorService.addAuthor(newAuthor);
     }
+
+    @GetMapping
+    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+        return ResponseEntity.ok(authorService.getAllAuthors());
+    }
+
 }
