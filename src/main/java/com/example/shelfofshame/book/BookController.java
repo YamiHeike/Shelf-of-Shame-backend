@@ -1,6 +1,7 @@
 package com.example.shelfofshame.book;
 
 import com.example.shelfofshame.book.dto.CreateBookDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,7 @@ public class BookController {
     private final BookService bookService;
 
     @PostMapping("/new")
-    private Book addBook(@RequestBody CreateBookDto book) {
+    public Book addBook(@Valid @RequestBody CreateBookDto book) {
         return bookService.createBook(book);
     }
 }

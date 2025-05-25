@@ -5,6 +5,7 @@ import com.example.shelfofshame.book.genre.Genre;
 import com.example.shelfofshame.book.genre.GenreService;
 import com.example.shelfofshame.errors.AppException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
@@ -26,6 +28,7 @@ public class BookService {
 
     public Book createBook(CreateBookDto createBookDto) {
         Book book = bookMapper.mapCreateDtoToBook(createBookDto);
+        System.out.println("DESC: " + createBookDto.getDescription().length());
         Set<Genre> genres = createBookDto.getGenres().stream()
                 .map(genreService::findById)
                 .collect(Collectors.toSet());

@@ -28,7 +28,7 @@ public class Book {
     )
     private Set<Author> authors;
     @Column
-    @Max(value=1500, message = "Description must be between 0 and 1500 characters")
+    @Size(max=1500, message = "Description must be between 0 and 1500 characters")
     private String description;
     @Column
     private int numberOfPages;

@@ -3,6 +3,7 @@ package com.example.shelfofshame.book.dto;
 import com.example.shelfofshame.author.Author;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +21,7 @@ public class CreateBookDto {
     @NotBlank
     private String title;
     private Set<Author> authors;
+    @Size(max = 1500, message = "Description must be between 0 and 1500 characters")
     private String description;
     private int numberOfPages;
     private Set<Long> genres;
