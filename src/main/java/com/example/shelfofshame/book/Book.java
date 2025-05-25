@@ -3,6 +3,7 @@ package com.example.shelfofshame.book;
 import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.book.genre.Genre;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -27,6 +28,7 @@ public class Book {
     )
     private Set<Author> authors;
     @Column
+    @Max(value=1500, message = "Description must be between 0 and 1500 characters")
     private String description;
     @Column
     private int numberOfPages;
