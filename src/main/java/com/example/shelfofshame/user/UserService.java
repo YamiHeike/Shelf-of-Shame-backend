@@ -5,6 +5,7 @@ import com.example.shelfofshame.user.dto.CredentialsDto;
 import com.example.shelfofshame.user.dto.SignupDto;
 import com.example.shelfofshame.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,16 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
     public UserDto findByEmail(String email) {
+        log.info("Finding user by email {}", email);
         User user = findUserByEmail(email);
+        log.info("Found user {}", user.getEmail());
         return userMapper.toUserDto(user);
     }
 
