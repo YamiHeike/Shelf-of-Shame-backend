@@ -17,4 +17,7 @@ public class GenreService {
     public List<Genre> getAllGenres() {
         return genreRepository.findAll();
     }
+    public boolean genreExists(Long id) {
+        return genreRepository.existsById(id);
+    }
 }

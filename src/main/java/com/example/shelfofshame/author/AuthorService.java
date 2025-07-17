@@ -29,11 +29,32 @@ public class AuthorService {
         return authorMapper.authorToAuthorDto(savedAuthor);
     }
 
+    @Transactional
+    public AuthorDto addAuthor(String firstName, String lastName) {
+        CreateAuthorDto authorDto = CreateAuthorDto.builder()
+                .firstName(firstName)
+                .lastName(lastName)
+                .build();
+        return addAuthor(authorDto);
+    }
+
     @Transactional(readOnly = true)
     public List<AuthorDto> getAllAuthors() {
         List<Author> authors = authorRepository.findAll();
         return authors.stream()
                 .map(authorMapper::authorToAuthorDto)
                 .collect(Collectors.toList());
+    }
+
+    public Author getByFirstNameAndLastName(String firstName, String lastName) {
+        return authorRepository.findByFirstNameAndLastName(firstName, lastName);
+    }
+
+    public Author findAuthor(long id) {
+        return authorRepository.findById(id);
+    }
+
+    public Author dtoToAuthor(AuthorDto authorDto) {
+        return authorMapper.authorDtoToAuthor(authorDto);
     }
 }

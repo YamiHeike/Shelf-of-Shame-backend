@@ -6,9 +6,7 @@ import com.example.shelfofshame.book.genre.GenreService;
 import com.example.shelfofshame.errors.AppException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +39,10 @@ public class BookService {
 
     public Book getByIsbn(String isbn) {
         return bookRepository.findByIsbn(isbn).orElseThrow(() -> new AppException("Book not found", HttpStatus.BAD_REQUEST));
+    }
+
+    public boolean existsByIsbn(String isbn) {
+        return bookRepository.existsByIsbn(isbn);
     }
 
     public List<Book> getAllBooks() {
