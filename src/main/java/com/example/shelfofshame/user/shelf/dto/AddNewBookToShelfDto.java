@@ -18,7 +18,6 @@ public class AddNewBookToShelfDto {
     @NotBlank
     private String title;
     private long authorId;
-    @NotBlank
     private String firstName;
     private String lastName;
     @PositiveOrZero
