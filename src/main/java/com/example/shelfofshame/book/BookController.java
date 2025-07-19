@@ -1,4 +1,4 @@
-package com.example.shelfofshame.book;
+                                                                                                                                                                              package com.example.shelfofshame.book;
 
 import com.example.shelfofshame.book.dto.CreateBookDto;
 import jakarta.validation.Valid;
@@ -11,7 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/books")
 @RequiredArgsConstructor
-public class BookController {
+public class  BookController {
     private final BookService bookService;
 
     @PostMapping("/new")
