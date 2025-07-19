@@ -21,6 +21,7 @@ import java.util.Set;
 public class CreateBookDto {
     @Schema(description = "ISBN-10 of the book stripped in a format of a number without delimiters", example = "0471926495")
     @Pattern(regexp = "^[0-9]{10}$", message = "ISBN-10 must be exactly 10 digits.")
+    @NotBlank
     private String isbn;
     @Schema(description = "Title of the book", example = "War and Peace")
     @NotBlank
