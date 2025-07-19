@@ -17,6 +17,12 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 public class SecurityConfig {
     private final UserAuthenticationEntryPoint userAutenticationEntryPoint;
     private final UserAuthProvider userAuthProvider;
+    private final String[] SWAGGER_WHITELIST = {
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs.yaml"
+    };
 
     @Bean
     public JwtAuthFilter jwtAuthFilter() {
@@ -29,6 +35,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(HttpMethod.POST, "/login", "/signup").permitAll()
+                        .requestMatchers(SWAGGER_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(userAutenticationEntryPoint))

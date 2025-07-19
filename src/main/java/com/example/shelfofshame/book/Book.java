@@ -3,7 +3,6 @@ package com.example.shelfofshame.book;
 import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.book.genre.Genre;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
