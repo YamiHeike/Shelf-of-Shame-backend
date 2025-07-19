@@ -19,8 +19,12 @@ public class  BookController {
     private final BookService bookService;
 
     @Operation(summary = "Add a new book", description = "Creates a new book object in the system")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Book successfully created"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data or book already exists")
+    })
     @PostMapping("/new")
-    public ResponseEntity<Book> addBook(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "\"Data Transfer Object representing a book used for communication between client and server.\"", required = true) CreateBookDto book) {
+    public ResponseEntity<Book> addBook(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object representing a book used for communication between client and server.", required = true) CreateBookDto book) {
         Book created = bookService.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
