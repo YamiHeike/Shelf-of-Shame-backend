@@ -10,11 +10,13 @@ import com.example.shelfofshame.errors.AppException;
 import com.example.shelfofshame.user.User;
 import com.example.shelfofshame.user.shelf.dto.AddBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
+import com.example.shelfofshame.user.shelf.dto.UserShelfItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -82,5 +84,13 @@ public class UserShelfItemService {
                 .status(dto.getStatus())
                 .build();
         return userShelfItemRepository.save(shelfItem);
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserShelfItemDto> findBooksFor(User user) {
+        List<UserShelfItem> items = userShelfItemRepository.findByUser(user);
+        return List.copyOf(items.stream()
+                .map(userShelfItemMapper::toUserShelfItemDto)
+                .toList());
     }
 }
