@@ -2,6 +2,7 @@ package com.example.shelfofshame.book.dto;
 
 import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.author.dto.AuthorDto;
+import com.example.shelfofshame.book.genre.dto.GenreDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateBookDto {
+public class BookDto {
     @Schema(description = "ISBN-10 of the book stripped in a format of a number without delimiters", example = "0471926495")
     @Pattern(regexp = "^[0-9]{10}$", message = "ISBN-10 must be exactly 10 digits.")
     @NotBlank
@@ -35,6 +36,6 @@ public class CreateBookDto {
     private String description;
     @Schema(description = "Number of pages in the book", example = "529")
     private int numberOfPages;
-    @ArraySchema(schema = @Schema(description = "Set of genre IDs associated with the book"), minItems = 1, uniqueItems = true)
-    private Set<Long> genres;
+    @ArraySchema(schema = @Schema(description = "Set of GenreDto objects representing genres associated with the book"), minItems = 1, uniqueItems = true)
+    private Set<GenreDto> genres;
 }

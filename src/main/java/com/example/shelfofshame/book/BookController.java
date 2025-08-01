@@ -1,5 +1,6 @@
                                                                                                                                                                               package com.example.shelfofshame.book;
 
+import com.example.shelfofshame.book.dto.BookDto;
 import com.example.shelfofshame.book.dto.CreateBookDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -24,8 +25,8 @@ public class  BookController {
             @ApiResponse(responseCode = "400", description = "Invalid request data or book already exists")
     })
     @PostMapping("/new")
-    public ResponseEntity<Book> addBook(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object representing a book used for communication between client and server.", required = true) CreateBookDto book) {
-        Book created = bookService.createBook(book);
+    public ResponseEntity<BookDto> addBook(@Valid @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object representing a book used for communication between client and server.", required = true) CreateBookDto book) {
+        BookDto created = bookService.createBook(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
@@ -34,7 +35,7 @@ public class  BookController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved a list of books")
     })
     @GetMapping
-    public ResponseEntity<List<Book>> getAllBooks() {
+    public ResponseEntity<List<BookDto>> getAllBooks() {
         return ResponseEntity.ok(bookService.getAllBooks());
     }
 }

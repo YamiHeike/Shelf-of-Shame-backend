@@ -4,6 +4,7 @@ import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.author.AuthorService;
 import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.book.BookService;
+import com.example.shelfofshame.book.dto.BookDto;
 import com.example.shelfofshame.book.dto.CreateBookDto;
 import com.example.shelfofshame.book.genre.GenreService;
 import com.example.shelfofshame.errors.AppException;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -44,9 +46,10 @@ public class UserShelfItemService {
     }
 
     @Transactional
-    public UserShelfItem addNewBookToShelf(AddNewBookToShelfDto dto, User user) {
+    public UserShelfItemDto addNewBookToShelf(AddNewBookToShelfDto dto, User user) {
         String firstName = dto.getFirstName();
-        if ((firstName == null || firstName.isBlank()) && dto.getAuthorId() < 1) {
+        Optional<Long> authorId = Optional.ofNullable(dto.getAuthorId());
+        if ((firstName == null || firstName.isBlank()) && (authorId.isPresent() && dto.getAuthorId() < 1)) {
             throw new AppException("Invalid author", HttpStatus.BAD_REQUEST);
         }
         if(bookService.existsByIsbn(dto.getIsbn()))
@@ -56,7 +59,7 @@ public class UserShelfItemService {
 
         Author author = null;
 
-        if (dto.getAuthorId() > 0) {
+        if (authorId.isPresent() && dto.getAuthorId() > 0) {
             author = authorService.findAuthor(dto.getAuthorId());
         }
         if (author == null && firstName != null) {
@@ -69,21 +72,21 @@ public class UserShelfItemService {
         CreateBookDto bookDto = CreateBookDto.builder()
                 .isbn(dto.getIsbn())
                 .title(dto.getTitle())
-                .authors(Set.of(author))
+                .authors(Set.of(authorService.authorToDto(author)))
                 .description(dto.getDescription())
                 .numberOfPages(dto.getNumberOfPages())
                 .genres(Set.of(dto.getGenre()))
                 .build();
 
-        Book book = bookService.createBook(bookDto);
+        BookDto book = bookService.createBook(bookDto);
         UserShelfItem shelfItem = UserShelfItem.builder()
                 .user(user)
-                .book(book)
+                .book(bookService.mapToBook(book))
                 .notes(dto.getNotes())
                 .difficulty(dto.getDifficulty())
                 .status(dto.getStatus())
                 .build();
-        return userShelfItemRepository.save(shelfItem);
+        return userShelfItemMapper.toUserShelfItemDto(userShelfItemRepository.save(shelfItem));
     }
 
     @Transactional(readOnly = true)

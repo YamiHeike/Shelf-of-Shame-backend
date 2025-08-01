@@ -57,4 +57,8 @@ public class AuthorService {
     public Author dtoToAuthor(AuthorDto authorDto) {
         return authorMapper.authorDtoToAuthor(authorDto);
     }
+
+    public AuthorDto authorToDto(Author author) {
+        return authorMapper.authorToAuthorDto(author);
+    }
 }
