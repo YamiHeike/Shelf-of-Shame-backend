@@ -1,5 +1,6 @@
 package com.example.shelfofshame.book.genre;
 
+import com.example.shelfofshame.book.genre.dto.GenreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -21,7 +22,7 @@ public class GenresController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved list of genres")
     })
     @GetMapping
-    public ResponseEntity<List<Genre>> getAllGenres() {
+    public ResponseEntity<List<GenreDto>> getAllGenres() {
         return ResponseEntity.ok(genreService.getAllGenres());
     }
 }
