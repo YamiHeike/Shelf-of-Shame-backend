@@ -59,8 +59,8 @@ public class UserShelfItemService {
 
         Author author = null;
 
-        if (authorId.isPresent() && dto.getAuthorId() > 0) {
-            author = authorService.findAuthor(dto.getAuthorId());
+        if (authorId.isPresent() && authorId.get() > 0) {
+            author = authorService.findAuthor(authorId.get());
         }
         if (author == null && firstName != null) {
             author = authorService.getByFirstNameAndLastName(firstName, dto.getLastName());

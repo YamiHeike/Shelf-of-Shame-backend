@@ -1,6 +1,5 @@
 package com.example.shelfofshame.book.dto;
 
-import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.author.dto.AuthorDto;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -27,7 +26,7 @@ public class CreateBookDto {
     @Schema(description = "Title of the book", example = "War and Peace")
     @NotBlank
     private String title;
-    @ArraySchema(schema = @Schema(description = "A set of authors of the book", implementation = Author.class), minItems = 1)
+    @ArraySchema(schema = @Schema(description = "A set of authors of the book", implementation = AuthorDto.class), minItems = 1)
     @NotNull
     private Set<AuthorDto> authors;
     @Schema(description = "Description of a book. Must be between 0 and 1500 characters.", example = "International bestseller. Brilliant debut of John Doe!")
