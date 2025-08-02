@@ -69,9 +69,8 @@ public class UserShelfItemController {
                                                                     @Parameter(hidden = true) Principal principal) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         log.info("Creating new book and adding it to shelf started for user {}", user.getUsername());
-        UserShelfItem userShelfItem = userShelfItemService.addNewBookToShelf(addNewBookToShelfDto, user);
-        UserShelfItemDto userShelfItemDto = userShelfItemMapper.toUserShelfItemDto(userShelfItem);
-        return ResponseEntity.ok(userShelfItemDto);
+        UserShelfItemDto userShelfItem = userShelfItemService.addNewBookToShelf(addNewBookToShelfDto, user);
+        return ResponseEntity.ok(userShelfItem);
     }
 
     @Operation(

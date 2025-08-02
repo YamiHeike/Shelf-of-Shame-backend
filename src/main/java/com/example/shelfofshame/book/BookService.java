@@ -1,5 +1,6 @@
 package com.example.shelfofshame.book;
 
+import com.example.shelfofshame.book.dto.BookDto;
 import com.example.shelfofshame.book.dto.CreateBookDto;
 import com.example.shelfofshame.book.genre.Genre;
 import com.example.shelfofshame.book.genre.GenreService;
@@ -27,25 +28,32 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book createBook(CreateBookDto createBookDto) {
+    public BookDto createBook(CreateBookDto createBookDto) {
         Book book = bookMapper.mapCreateDtoToBook(createBookDto);
         System.out.println("DESC: " + createBookDto.getDescription().length());
         Set<Genre> genres = createBookDto.getGenres().stream()
                 .map(genreService::findById)
                 .collect(Collectors.toSet());
         book.setGenres(genres);
-        return addBook(book);
+        return bookMapper.mapBookToBookDto(addBook(book));
     }
 
     public Book getByIsbn(String isbn) {
         return bookRepository.findByIsbn(isbn).orElseThrow(() -> new AppException("Book not found", HttpStatus.BAD_REQUEST));
     }
 
+    public Book mapToBook(BookDto bookDto) {
+        return bookMapper.mapBookDtoToBook(bookDto);
+    }
+
     public boolean existsByIsbn(String isbn) {
         return bookRepository.existsByIsbn(isbn);
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public List<BookDto> getAllBooks() {
+        return bookRepository.findAll()
+                .stream()
+                .map(bookMapper::mapBookToBookDto)
+                .toList();
     }
 }
