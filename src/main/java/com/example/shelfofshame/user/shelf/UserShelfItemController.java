@@ -7,12 +7,17 @@ import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.UserShelfItemDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,5 +93,41 @@ public class UserShelfItemController {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         List<UserShelfItemDto> userShelfItems = userShelfItemService.findBooksFor(user);
         return ResponseEntity.ok(userShelfItems);
+    }
+
+    @Operation(
+            summary = "Retrieves a page of user shelf items",
+            description = """
+                    Returns a paginated list of user shelf items belonging to the authenticated user.\s
+                    Pagination parameters (page and size) are passed as query parameters.\s"""
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved a list of user shelf items"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - user not authenticated"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @Parameters({
+            @Parameter(
+                    name = "page",
+                    description = "Page number (0-based)",
+                    in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", defaultValue = "0")
+            ),
+            @Parameter(
+                    name = "size",
+                    description = "Number of items per page",
+                    in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", defaultValue = "20")
+            )
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/pages")
+    public ResponseEntity<Page<UserShelfItemDto>> getUserShelfItemsPage(
+            @Parameter(hidden = true) Principal principal,
+            Pageable pageable
+    ) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        var page = userShelfItemService.findUserShelfItemsPage(user, pageable);
+        return ResponseEntity.ok(page);
     }
 }

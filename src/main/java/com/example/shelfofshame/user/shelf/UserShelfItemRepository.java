@@ -2,6 +2,8 @@ package com.example.shelfofshame.user.shelf;
 
 import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.user.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,6 @@ public interface UserShelfItemRepository extends JpaRepository<UserShelfItem, Lo
     public List<UserShelfItem> findByUserAndDifficulty(User user, int difficulty);
     public List<UserShelfItem> findByUserAndDifficultyAndStatus(User user, int difficulty, Status status);
     public List<UserShelfItem> deleteByUserAndBook(User user, Book book);
-    boolean existsByUserAndBook(User user, Book book);
+    public boolean existsByUserAndBook(User user, Book book);
+    public Page<UserShelfItem> findByUser(User user, Pageable pageable);
 }

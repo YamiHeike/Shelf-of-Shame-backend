@@ -13,6 +13,8 @@ import com.example.shelfofshame.user.shelf.dto.AddBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.UserShelfItemDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,5 +97,10 @@ public class UserShelfItemService {
         return List.copyOf(items.stream()
                 .map(userShelfItemMapper::toUserShelfItemDto)
                 .toList());
+    }
+
+    public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable) {
+        Page<UserShelfItem> items = userShelfItemRepository.findByUser(user, pageable);
+        return items.map(userShelfItemMapper::toUserShelfItemDto);
     }
 }
