@@ -99,8 +99,18 @@ public class UserShelfItemService {
                 .toList());
     }
 
+    @Transactional(readOnly = true)
     public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable) {
         Page<UserShelfItem> items = userShelfItemRepository.findByUser(user, pageable);
         return items.map(userShelfItemMapper::toUserShelfItemDto);
+    }
+
+    public UserShelfItemDto findUserShelfItemById(User user, Long id) {
+        UserShelfItem shelfItem = userShelfItemRepository
+                .findById(id)
+                .orElseThrow(() -> new AppException("Item not found", HttpStatus.NOT_FOUND));
+        if(!userShelfItemRepository.existsByUserAndBook(user, shelfItem.getBook()))
+            throw new AppException("Item does not belong to your shelf", HttpStatus.BAD_REQUEST);
+        return userShelfItemMapper.toUserShelfItemDto(shelfItem);
     }
 }

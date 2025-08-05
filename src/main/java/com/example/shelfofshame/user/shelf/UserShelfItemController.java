@@ -130,4 +130,24 @@ public class UserShelfItemController {
         var page = userShelfItemService.findUserShelfItemsPage(user, pageable);
         return ResponseEntity.ok(page);
     }
+
+    @Operation(
+            summary = "Get a user's shelf item by ID",
+            description = "Returns the shelf item belonging to the currently authenticated user by item ID."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved shelf item"),
+            @ApiResponse(responseCode = "400", description = "Item exists but does not belong to the current user's shelf"),
+            @ApiResponse(responseCode = "404", description = "Shelf item not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/{id}")
+    public ResponseEntity<UserShelfItemDto> findUserShelfItem(
+            @Parameter(hidden = true) Principal principal,
+            @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        UserShelfItemDto shelfItem = userShelfItemService.findUserShelfItemById(user, id);
+        return ResponseEntity.ok(shelfItem);
+    }
 }
