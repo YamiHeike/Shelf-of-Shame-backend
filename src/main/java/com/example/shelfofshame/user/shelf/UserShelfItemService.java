@@ -106,11 +106,24 @@ public class UserShelfItemService {
     }
 
     public UserShelfItemDto findUserShelfItemById(User user, Long id) {
+        var shelfItem = retrieveUserShelfItemById(user, id);
+        return userShelfItemMapper.toUserShelfItemDto(shelfItem);
+    }
+
+    @Transactional
+    public UserShelfItemDto markAsRead(User user, Long id) {
+        var shelfItem = retrieveUserShelfItemById(user, id);
+        shelfItem.setStatus(Status.GLORY);
+        userShelfItemRepository.save(shelfItem);
+        return userShelfItemMapper.toUserShelfItemDto(shelfItem);
+    }
+
+    private UserShelfItem retrieveUserShelfItemById(User user, Long id) {
         UserShelfItem shelfItem = userShelfItemRepository
                 .findById(id)
                 .orElseThrow(() -> new AppException("Item not found", HttpStatus.NOT_FOUND));
         if(!userShelfItemRepository.existsByUserAndBook(user, shelfItem.getBook()))
             throw new AppException("Item does not belong to your shelf", HttpStatus.BAD_REQUEST);
-        return userShelfItemMapper.toUserShelfItemDto(shelfItem);
+        return shelfItem;
     }
 }

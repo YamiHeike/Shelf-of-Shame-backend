@@ -150,4 +150,25 @@ public class UserShelfItemController {
         UserShelfItemDto shelfItem = userShelfItemService.findUserShelfItemById(user, id);
         return ResponseEntity.ok(shelfItem);
     }
+
+    @Operation(
+            summary = "Mark user shelf item as read",
+            description = "Changes status of user shelf item associated with the ID to read"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully marked shelf item as read"),
+            @ApiResponse(responseCode = "400", description = "Item exists but does not belong to the current user's shelf"),
+            @ApiResponse(responseCode = "404", description = "Shelf item not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/{id}/mark-read")
+    public ResponseEntity<UserShelfItemDto> markAsRead(
+            @Parameter(hidden = true) Principal principal,
+            @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id
+    ) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        UserShelfItemDto shelfItem = userShelfItemService.markAsRead(user, id);
+        return ResponseEntity.ok(shelfItem);
+    }
 }
