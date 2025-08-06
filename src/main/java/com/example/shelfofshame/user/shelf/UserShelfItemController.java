@@ -162,7 +162,7 @@ public class UserShelfItemController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @SecurityRequirement(name = "bearerAuth")
-    @GetMapping("/{id}/mark-read")
+    @PutMapping("/{id}/mark-read")
     public ResponseEntity<UserShelfItemDto> markAsRead(
             @Parameter(hidden = true) Principal principal,
             @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id
