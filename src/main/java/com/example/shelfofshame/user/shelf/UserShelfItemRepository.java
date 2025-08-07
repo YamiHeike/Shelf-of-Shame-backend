@@ -18,5 +18,6 @@ public interface UserShelfItemRepository extends JpaRepository<UserShelfItem, Lo
     public List<UserShelfItem> deleteByUserAndBook(User user, Book book);
     public UserShelfItem findById(long id);
     public boolean existsByUserAndBook(User user, Book book);
+    public boolean existsByUserAndId(User user, Long id);
     public Page<UserShelfItem> findByUser(User user, Pageable pageable);
 }

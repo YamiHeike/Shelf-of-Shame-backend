@@ -162,7 +162,7 @@ public class UserShelfItemController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
     @SecurityRequirement(name = "bearerAuth")
-    @PatchMapping("/{id}/mark-read")
+    @PatchMapping("/{id}")
     public ResponseEntity<UserShelfItemDto> markAsRead(
             @Parameter(hidden = true) Principal principal,
             @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id
@@ -170,5 +170,25 @@ public class UserShelfItemController {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         UserShelfItemDto shelfItem = userShelfItemService.markAsRead(user, id);
         return ResponseEntity.ok(shelfItem);
+    }
+
+    @Operation(
+            summary = "Deletes user shelf item",
+            description = "Checks whether whether a User Shelf Item associated with the ID exists and deletes it if it does"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully deleted shelf item"),
+            @ApiResponse(responseCode = "400", description = "Failed to delete shelf item"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUserShelfItem(
+            @Parameter(hidden = true) Principal principal,
+            @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id
+    ) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        userShelfItemService.deleteUserShelfItemById(user, id);
+        return ResponseEntity.noContent().build();
     }
 }

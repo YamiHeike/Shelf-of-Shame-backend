@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -125,12 +126,20 @@ public class UserShelfItemService {
         return userShelfItemMapper.toUserShelfItemDto(shelfItem);
     }
 
+    @Transactional
+    public void deleteUserShelfItemById(User user, Long id) {
+        if(!userShelfItemRepository.existsByUserAndId(user, id))
+            throw new AppException("Unable to match user id to shelf item", HttpStatus.BAD_REQUEST);
+        userShelfItemRepository.deleteById(id);
+    }
+
     private UserShelfItem retrieveUserShelfItemById(User user, Long id) {
         UserShelfItem shelfItem = userShelfItemRepository
                 .findById(id)
-                .orElseThrow(() -> new AppException("Item not found", HttpStatus.NOT_FOUND));
+                .orElseThrow(() -> new AppException("Item not found", HttpStatus.BAD_REQUEST));
         if(!userShelfItemRepository.existsByUserAndBook(user, shelfItem.getBook()))
             throw new AppException("Item does not belong to your shelf", HttpStatus.BAD_REQUEST);
         return shelfItem;
     }
+
 }
