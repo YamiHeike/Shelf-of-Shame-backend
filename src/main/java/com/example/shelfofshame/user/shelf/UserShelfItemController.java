@@ -4,6 +4,7 @@ import com.example.shelfofshame.user.AuthenticatedUserProvider;
 import com.example.shelfofshame.user.User;
 import com.example.shelfofshame.user.shelf.dto.AddBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
+import com.example.shelfofshame.user.shelf.dto.EditShelfItemDto;
 import com.example.shelfofshame.user.shelf.dto.UserShelfItemDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -48,8 +49,11 @@ public class UserShelfItemController {
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/add")
-    public ResponseEntity<UserShelfItemDto> addNewBookToShelf(@RequestBody @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object with ISBN-10 and book metadata") AddBookToShelfDto addBookToShelfDto,
-                                                              @Parameter(hidden = true) Principal principal) {
+    public ResponseEntity<UserShelfItemDto> addNewBookToShelf(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object with ISBN-10 and book metadata")
+            @RequestBody @Valid AddBookToShelfDto addBookToShelfDto,
+            @Parameter(hidden = true) Principal principal
+    ) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         log.info("Add new book to shelf started for user {}", user.getUsername());
         UserShelfItem userShelfItem = userShelfItemService.addExistingBook(addBookToShelfDto, user);
@@ -70,8 +74,10 @@ public class UserShelfItemController {
     })
     @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/add-new")
-    public ResponseEntity<UserShelfItemDto> createAndBookAddToShelf(@RequestBody @Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object with new book and shelf item details") AddNewBookToShelfDto addNewBookToShelfDto,
-                                                                    @Parameter(hidden = true) Principal principal) {
+    public ResponseEntity<UserShelfItemDto> createAndBookAddToShelf(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object with new book and shelf item details")
+            @RequestBody @Valid AddNewBookToShelfDto addNewBookToShelfDto,
+            @Parameter(hidden = true) Principal principal) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         log.info("Creating new book and adding it to shelf started for user {}", user.getUsername());
         UserShelfItemDto userShelfItem = userShelfItemService.addNewBookToShelf(addNewBookToShelfDto, user);
@@ -137,7 +143,7 @@ public class UserShelfItemController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved shelf item"),
-            @ApiResponse(responseCode = "400", description = "Item exists but does not belong to the current user's shelf"),
+            @ApiResponse(responseCode = "400", description = "Shelf item exists but is not associated with the current authenticated user"),
             @ApiResponse(responseCode = "404", description = "Shelf item not found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
@@ -157,7 +163,7 @@ public class UserShelfItemController {
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully marked shelf item as read"),
-            @ApiResponse(responseCode = "400", description = "Item exists but does not belong to the current user's shelf"),
+            @ApiResponse(responseCode = "400", description = "Shelf item exists but is not associated with the current authenticated user"),
             @ApiResponse(responseCode = "404", description = "Shelf item not found"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")
     })
@@ -169,6 +175,29 @@ public class UserShelfItemController {
     ) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
         UserShelfItemDto shelfItem = userShelfItemService.markAsRead(user, id);
+        return ResponseEntity.ok(shelfItem);
+    }
+
+    @Operation(
+            summary = "Edits User Shelf Item Details",
+            description = "Modifies status, difficulty and notes of the User Shelf Item associated with the ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully edited shelf item details"),
+            @ApiResponse(responseCode = "400", description = "Shelf item exists but is not associated with the current authenticated user"),
+            @ApiResponse(responseCode = "404", description = "Shelf item not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @PatchMapping("/{id}/edit-details")
+    public ResponseEntity<UserShelfItemDto> updateUserShelfItem(
+            @Parameter(hidden = true) Principal principal,
+            @Parameter(description = "ID of the shelf item", example = "42") @PathVariable Long id,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Data Transfer Object containing shelf item fields to be modified")
+            @RequestBody @Valid EditShelfItemDto editShelfItemDto
+    ) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        var shelfItem = userShelfItemService.editShelfItemDetails(user, id, editShelfItemDto);
         return ResponseEntity.ok(shelfItem);
     }
 

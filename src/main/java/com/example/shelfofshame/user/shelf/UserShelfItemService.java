@@ -11,6 +11,7 @@ import com.example.shelfofshame.errors.AppException;
 import com.example.shelfofshame.user.User;
 import com.example.shelfofshame.user.shelf.dto.AddBookToShelfDto;
 import com.example.shelfofshame.user.shelf.dto.AddNewBookToShelfDto;
+import com.example.shelfofshame.user.shelf.dto.EditShelfItemDto;
 import com.example.shelfofshame.user.shelf.dto.UserShelfItemDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -123,6 +124,16 @@ public class UserShelfItemService {
         var shelfItem = retrieveUserShelfItemById(user, id);
         shelfItem.setStatus(Status.GLORY);
         userShelfItemRepository.save(shelfItem);
+        return userShelfItemMapper.toUserShelfItemDto(shelfItem);
+    }
+
+    @Transactional
+    public UserShelfItemDto editShelfItemDetails(User user, Long id, EditShelfItemDto dto) {
+        var shelfItem = retrieveUserShelfItemById(user, id);
+        shelfItem.setStatus(dto.getStatus());
+        shelfItem.setNotes(dto.getNotes());
+        shelfItem.setDifficulty(dto.getDifficulty());
+        shelfItem = userShelfItemRepository.save(shelfItem);
         return userShelfItemMapper.toUserShelfItemDto(shelfItem);
     }
 
