@@ -4,6 +4,7 @@ import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -20,5 +21,5 @@ public interface UserShelfItemRepository extends JpaRepository<UserShelfItem, Lo
     public UserShelfItem findById(long id);
     public boolean existsByUserAndBook(User user, Book book);
     public boolean existsByUserAndId(User user, Long id);
-    public Page<UserShelfItem> findByUser(User user, Pageable pageable);
+    // public Page<UserShelfItem> findBy(Specification<UserShelfItem> specification, Pageable pageable);
 }
