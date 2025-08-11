@@ -104,11 +104,11 @@ public class UserShelfItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable) {
+    public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable, Status status, Integer min, Integer max, List<String> genres) {
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                Sort.by(Sort.Direction.ASC, "id")
+                Sort.by(Sort.Direction.DESC, "id")
                 );
         Page<UserShelfItem> items = userShelfItemRepository.findByUser(user, sortedPageable);
         return items.map(userShelfItemMapper::toUserShelfItemDto);

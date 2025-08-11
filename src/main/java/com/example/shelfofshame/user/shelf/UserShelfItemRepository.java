@@ -5,12 +5,13 @@ import com.example.shelfofshame.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface UserShelfItemRepository extends JpaRepository<UserShelfItem, Long> {
+public interface UserShelfItemRepository extends JpaRepository<UserShelfItem, Long>, JpaSpecificationExecutor<UserShelfItem> {
     public List<UserShelfItem> findByUser(User user);
     public List<UserShelfItem> findByUserAndStatus(User user, Status status);
     public List<UserShelfItem> findByUserAndDifficulty(User user, int difficulty);
