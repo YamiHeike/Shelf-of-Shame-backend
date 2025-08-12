@@ -19,7 +19,11 @@ public class UserShelfItemSpecs {
     public static Specification<UserShelfItem> genresIn(List<String> genres) {
         return (root, query, builder) -> {
             query.distinct(true);
-            return root.join("genres").get("name").in(genres);
+            return root
+                    .join("book")
+                    .join("genres")
+                    .get("name")
+                    .in(genres);
         };
 
     }
