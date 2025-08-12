@@ -18,12 +18,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -104,13 +104,19 @@ public class UserShelfItemService {
     }
 
     @Transactional(readOnly = true)
-    public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable) {
+    public Page<UserShelfItemDto> findUserShelfItemsPage(User user, Pageable pageable, Status status, Integer min, Integer max, List<String> genres) {
         Pageable sortedPageable = PageRequest.of(
                 pageable.getPageNumber(),
                 pageable.getPageSize(),
-                Sort.by(Sort.Direction.ASC, "id")
+                Sort.by(Sort.Direction.DESC, "id")
                 );
-        Page<UserShelfItem> items = userShelfItemRepository.findByUser(user, sortedPageable);
+        Specification<UserShelfItem> specification = Specification.where(UserShelfItemSpecs.belongsToUser(user));
+
+        if(status != null) specification = specification.and(UserShelfItemSpecs.hasStatus(status));
+        if(min != null || max != null) specification = specification.and(UserShelfItemSpecs.hasDifficulty(min, max));
+        if(genres != null && !genres.isEmpty()) specification = specification.and(UserShelfItemSpecs.genresIn(genres));
+
+        Page<UserShelfItem> items = userShelfItemRepository.findAll(specification, sortedPageable);
         return items.map(userShelfItemMapper::toUserShelfItemDto);
     }
 

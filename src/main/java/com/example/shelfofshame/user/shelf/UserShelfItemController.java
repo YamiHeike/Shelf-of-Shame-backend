@@ -104,8 +104,8 @@ public class UserShelfItemController {
     @Operation(
             summary = "Retrieves a page of user shelf items",
             description = """
-                    Returns a paginated list of user shelf items belonging to the authenticated user.\s
-                    Pagination parameters (page and size) are passed as query parameters.\s"""
+                   Returns a paginated list of shelf items belonging to the authenticated user.
+                   Supports optional filtering by status, difficulty range, and genres."""
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Successfully retrieved a list of user shelf items"),
@@ -113,27 +113,31 @@ public class UserShelfItemController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @Parameters({
-            @Parameter(
-                    name = "page",
-                    description = "Page number (0-based)",
-                    in = ParameterIn.QUERY,
-                    schema = @Schema(type = "integer", defaultValue = "0")
-            ),
-            @Parameter(
-                    name = "size",
-                    description = "Number of items per page",
-                    in = ParameterIn.QUERY,
-                    schema = @Schema(type = "integer", defaultValue = "20")
-            )
+            @Parameter(name = "page", description = "Page number (0-based)", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", defaultValue = "0")),
+            @Parameter(name = "size", description = "Number of items per page", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", defaultValue = "20")),
+            @Parameter(name = "status", description = "Filter by item status", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "string", allowableValues = {"SHAME", "GLORY", "READING"})),
+            @Parameter(name = "difficultyMin", description = "Minimum difficulty", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", minimum = "1", maximum = "10")),
+            @Parameter(name = "difficultyMax", description = "Maximum difficulty", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "integer", minimum = "1", maximum = "10")),
+            @Parameter(name = "genres", description = "Comma-separated list of genres", in = ParameterIn.QUERY,
+                    schema = @Schema(type = "string"))
     })
     @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/pages")
     public ResponseEntity<Page<UserShelfItemDto>> getUserShelfItemsPage(
             @Parameter(hidden = true) Principal principal,
-            Pageable pageable
+            Pageable pageable,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) Integer difficultyMin,
+            @RequestParam(required = false) Integer difficultyMax,
+            @RequestParam(required = false) List<String> genres
     ) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
-        var page = userShelfItemService.findUserShelfItemsPage(user, pageable);
+        var page = userShelfItemService.findUserShelfItemsPage(user, pageable, status, difficultyMin, difficultyMax, genres);
         return ResponseEntity.ok(page);
     }
 
