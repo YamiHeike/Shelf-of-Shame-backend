@@ -142,6 +142,30 @@ public class UserShelfItemController {
     }
 
     @Operation(
+            summary = "Retrieves book recommendations for the authenticated user",
+            description = """
+                    Finds random recommendations among existing shelf items based on status, difficulty range, and genres criteria."""
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved recommendations"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - user not authenticated"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @SecurityRequirement(name = "bearerAuth")
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<UserShelfItemDto>> getRecommendations(
+            @Parameter(hidden = true) Principal principal,
+            @RequestParam(required = false) Status status,
+            @RequestParam(required = false) Integer difficultyMin,
+            @RequestParam(required = false) Integer difficultyMax,
+            @RequestParam(required = false) List<String> genres,
+            @RequestParam(required = false) Integer limit
+    ) {
+        User user = authenticatedUserProvider.getCurrentUser(principal);
+        return  ResponseEntity.ok(userShelfItemService.findRecommendationsFor(user, status, difficultyMin, difficultyMax, genres, limit));
+    }
+
+    @Operation(
             summary = "Get a user's shelf item by ID",
             description = "Returns the shelf item belonging to the currently authenticated user by item ID."
     )
@@ -224,4 +248,7 @@ public class UserShelfItemController {
         userShelfItemService.deleteUserShelfItemById(user, id);
         return ResponseEntity.noContent().build();
     }
+
+
+
 }

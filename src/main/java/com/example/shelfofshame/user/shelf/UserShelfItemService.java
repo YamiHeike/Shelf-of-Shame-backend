@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -110,16 +111,23 @@ public class UserShelfItemService {
                 pageable.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "id")
                 );
-        Specification<UserShelfItem> specification = Specification.where(UserShelfItemSpecs.belongsToUser(user));
-
-        if(status != null) specification = specification.and(UserShelfItemSpecs.hasStatus(status));
-        if(min != null || max != null) specification = specification.and(UserShelfItemSpecs.hasDifficulty(min, max));
-        if(genres != null && !genres.isEmpty()) specification = specification.and(UserShelfItemSpecs.genresIn(genres));
-
+        Specification<UserShelfItem> specification = getUserShelfItemSpecs(user, status, min, max, genres);
         Page<UserShelfItem> items = userShelfItemRepository.findAll(specification, sortedPageable);
         return items.map(userShelfItemMapper::toUserShelfItemDto);
     }
 
+    @Transactional(readOnly = true)
+    public List<UserShelfItemDto> findRecommendationsFor(User user, Status status, Integer min, Integer max, List<String> genres, Integer limit) {
+        Specification<UserShelfItem> specification = getUserShelfItemSpecs(user, status, min, max, genres);
+        List<UserShelfItem> items = userShelfItemRepository.findAll(specification);
+        Collections.shuffle(items);
+        return items.stream()
+                .limit(limit)
+                .map(userShelfItemMapper::toUserShelfItemDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public UserShelfItemDto findUserShelfItemById(User user, Long id) {
         var shelfItem = retrieveUserShelfItemById(user, id);
         return userShelfItemMapper.toUserShelfItemDto(shelfItem);
@@ -159,4 +167,11 @@ public class UserShelfItemService {
         return shelfItem;
     }
 
+    private Specification<UserShelfItem> getUserShelfItemSpecs(User user, Status status, Integer min, Integer max, List<String> genres) {
+        Specification<UserShelfItem> specification = Specification.where(UserShelfItemSpecs.belongsToUser(user));
+        if(status != null) specification = specification.and(UserShelfItemSpecs.hasStatus(status));
+        if(min != null || max != null) specification = specification.and(UserShelfItemSpecs.hasDifficulty(min, max));
+        if(genres != null && !genres.isEmpty()) specification = specification.and(UserShelfItemSpecs.genresIn(genres));
+        return specification;
+    }
 }
