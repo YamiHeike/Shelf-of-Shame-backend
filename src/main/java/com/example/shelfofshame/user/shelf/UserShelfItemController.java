@@ -155,14 +155,13 @@ public class UserShelfItemController {
     @GetMapping("/recommendations")
     public ResponseEntity<List<UserShelfItemDto>> getRecommendations(
             @Parameter(hidden = true) Principal principal,
-            @RequestParam(required = false) Status status,
             @RequestParam(required = false) Integer difficultyMin,
             @RequestParam(required = false) Integer difficultyMax,
             @RequestParam(required = false) List<String> genres,
             @RequestParam(required = false) Integer limit
     ) {
         User user = authenticatedUserProvider.getCurrentUser(principal);
-        return  ResponseEntity.ok(userShelfItemService.findRecommendationsFor(user, status, difficultyMin, difficultyMax, genres, limit));
+        return  ResponseEntity.ok(userShelfItemService.findRecommendationsFor(user, difficultyMin, difficultyMax, genres, limit));
     }
 
     @Operation(

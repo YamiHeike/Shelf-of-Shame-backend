@@ -117,8 +117,8 @@ public class UserShelfItemService {
     }
 
     @Transactional(readOnly = true)
-    public List<UserShelfItemDto> findRecommendationsFor(User user, Status status, Integer min, Integer max, List<String> genres, Integer limit) {
-        Specification<UserShelfItem> specification = getUserShelfItemSpecs(user, status, min, max, genres);
+    public List<UserShelfItemDto> findRecommendationsFor(User user, Integer min, Integer max, List<String> genres, Integer limit) {
+        Specification<UserShelfItem> specification = getUserShelfItemSpecs(user, Status.SHAME, min, max, genres);
         List<UserShelfItem> items = userShelfItemRepository.findAll(specification);
         Collections.shuffle(items);
         return items.stream()
