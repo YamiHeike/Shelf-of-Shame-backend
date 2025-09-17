@@ -1,7 +1,7 @@
 package com.example.shelfofshame.user.shelf;
 
-import com.example.shelfofshame.author.Author;
 import com.example.shelfofshame.author.AuthorService;
+import com.example.shelfofshame.author.dto.AuthorDto;
 import com.example.shelfofshame.book.Book;
 import com.example.shelfofshame.book.BookService;
 import com.example.shelfofshame.book.dto.BookDto;
@@ -23,10 +23,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +53,9 @@ public class UserShelfItemService {
     @Transactional
     public UserShelfItemDto addNewBookToShelf(AddNewBookToShelfDto dto, User user) {
         String firstName = dto.getFirstName();
-        Optional<Long> authorId = Optional.ofNullable(dto.getAuthorId());
-        if ((firstName == null || firstName.isBlank()) && (authorId.isPresent() && dto.getAuthorId() < 1)) {
+        var authorIds = dto.getAuthorIds();
+        Objects.requireNonNull(authorIds);
+        if ((firstName == null || firstName.isBlank()) && (authorIds.isEmpty())) {
             throw new AppException("Invalid author", HttpStatus.BAD_REQUEST);
         }
         if(bookService.existsByIsbn(dto.getIsbn()))
@@ -64,22 +63,15 @@ public class UserShelfItemService {
         if(!genreService.genreExists(dto.getGenre()))
             throw new AppException("Invalid genre", HttpStatus.BAD_REQUEST);
 
-        Author author = null;
-
-        if (authorId.isPresent() && authorId.get() > 0) {
-            author = authorService.findAuthor(authorId.get());
-        }
-        if (author == null && firstName != null) {
-            author = authorService.getByFirstNameAndLastName(firstName, dto.getLastName());
-        }
-        if (author == null) {
-            author = authorService.dtoToAuthor(authorService.addAuthor(firstName, dto.getLastName()));
-        }
+        Set<AuthorDto> authors = authorIds.stream()
+                .map(authorService::findAuthor)
+                .map(authorService::authorToDto)
+                .collect(Collectors.toSet());
 
         CreateBookDto bookDto = CreateBookDto.builder()
                 .isbn(dto.getIsbn())
                 .title(dto.getTitle())
-                .authors(Set.of(authorService.authorToDto(author)))
+                .authors(authors)
                 .description(dto.getDescription())
                 .numberOfPages(dto.getNumberOfPages())
                 .genres(Set.of(dto.getGenre()))

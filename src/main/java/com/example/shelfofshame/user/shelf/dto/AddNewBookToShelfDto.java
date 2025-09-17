@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +24,7 @@ public class AddNewBookToShelfDto {
     @NotBlank
     private String title;
     @Schema(description = "ID associated with the author")
-    private Long authorId;
+    private List<Long> authorIds;
     @Schema(description = "First name of the author", example = "John")
     private String firstName;
     @Schema(description = "Last name of the author", example = "Doe")
