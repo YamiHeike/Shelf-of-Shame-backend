@@ -23,7 +23,7 @@ public class UserAuthProvider {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expirationMs}")
+    @Value("${jwt.expiration-ms}")
     private String expirationTime;
 
     private final UserService userService;
