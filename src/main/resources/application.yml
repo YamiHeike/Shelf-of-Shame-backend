@@ -5,8 +5,9 @@ server:
     include-binding-errors: always
 spring:
   datasource:
-    password:
-    url: jdbc:postgresql://localhost:5433/shelf
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+    url: ${DB_URL:jdbc:postgresql://localhost:5433/shelf}
 
   jpa:
     hibernate:
@@ -16,5 +17,4 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
-
 

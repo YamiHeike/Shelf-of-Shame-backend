@@ -1,0 +1,14 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: shelf-postgres
+    env_file:
+      - .env.postgres
+    ports:
+      - "5433:5432"
+    volumes:
+      - shelf_postgres_data:/var/lib/postgresql/data/
+
+volumes:
+  shelf_postgres_data:
